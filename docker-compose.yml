@@ -1,0 +1,15 @@
+services:
+  cobaltum:
+    build: .
+    container_name: cobaltum
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      # Пробрасываем историю цветов на хост, чтобы она не терялась при перезапуске контейнера
+      - ./data:/app/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
