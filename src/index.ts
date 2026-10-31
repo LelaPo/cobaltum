@@ -2,6 +2,8 @@ import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
 import dotenv from 'dotenv';
 import { pingCommand } from './commands/ping.js';
 import { serverIconCommand } from './commands/server-icon.js';
+import { rolesDebugCommand } from './commands/roles-debug.js';
+import { roleColorCommand } from './commands/role-color.js';
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ const client = new Client({
 client.commands = new Collection();
 client.commands.set(pingCommand.data.name, pingCommand);
 client.commands.set(serverIconCommand.data.name, serverIconCommand);
+client.commands.set(rolesDebugCommand.data.name, rolesDebugCommand);
+client.commands.set(roleColorCommand.data.name, roleColorCommand);
 
 client.once(Events.ClientReady, (c) => {
   console.log(`[Cobaltum] Готов! Авторизован как ${c.user.tag}`);

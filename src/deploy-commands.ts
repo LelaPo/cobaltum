@@ -2,6 +2,8 @@ import { REST, Routes } from 'discord.js';
 import dotenv from 'dotenv';
 import { pingCommand } from './commands/ping.js';
 import { serverIconCommand } from './commands/server-icon.js';
+import { rolesDebugCommand } from './commands/roles-debug.js';
+import { roleColorCommand } from './commands/role-color.js';
 
 dotenv.config();
 
@@ -17,6 +19,8 @@ if (!token || !clientId || !guildId) {
 const commands = [
   pingCommand.data.toJSON(),
   serverIconCommand.data.toJSON(),
+  rolesDebugCommand.data.toJSON(),
+  roleColorCommand.data.toJSON(),
 ];
 
 const rest = new REST().setToken(token);
