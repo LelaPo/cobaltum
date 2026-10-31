@@ -4,6 +4,7 @@ import { pingCommand } from './commands/ping.js';
 import { serverIconCommand } from './commands/server-icon.js';
 import { rolesDebugCommand } from './commands/roles-debug.js';
 import { roleColorCommand } from './commands/role-color.js';
+import { roleHistoryCommand } from './commands/role-history.js'; // <--- 1. Импорт
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ const commands = [
   serverIconCommand.data.toJSON(),
   rolesDebugCommand.data.toJSON(),
   roleColorCommand.data.toJSON(),
+  roleHistoryCommand.data.toJSON(), // <--- 2. Добавляем пятую команду
 ];
 
 const rest = new REST().setToken(token);

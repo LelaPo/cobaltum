@@ -1,9 +1,16 @@
-import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import {
+  Client,
+  Collection,
+  Events,
+  GatewayIntentBits,
+  MessageFlags,
+} from 'discord.js';
 import dotenv from 'dotenv';
 import { pingCommand } from './commands/ping.js';
 import { serverIconCommand } from './commands/server-icon.js';
 import { rolesDebugCommand } from './commands/roles-debug.js';
 import { roleColorCommand } from './commands/role-color.js';
+import { roleHistoryCommand } from './commands/role-history.js';
 
 dotenv.config();
 
@@ -21,19 +28,34 @@ const client = new Client({
   ],
 });
 
-// Инициализируем хранилище команд перед добавлением
+// Инициализируем коллекцию команд
 client.commands = new Collection();
 client.commands.set(pingCommand.data.name, pingCommand);
 client.commands.set(serverIconCommand.data.name, serverIconCommand);
 client.commands.set(rolesDebugCommand.data.name, rolesDebugCommand);
 client.commands.set(roleColorCommand.data.name, roleColorCommand);
+client.commands.set(roleHistoryCommand.data.name, roleHistoryCommand);
 
 client.once(Events.ClientReady, (c) => {
   console.log(`[Cobaltum] Готов! Авторизован как ${c.user.tag}`);
 });
 
-// Обработчик слеш-команд
+// Обработчик всех взаимодействий
 client.on(Events.InteractionCreate, async (interaction) => {
+  // 1. Автодополнение вариантов при наборе команды
+  if (interaction.isAutocomplete()) {
+    const command = interaction.client.commands.get(interaction.commandName);
+    if (!command || !command.autocomplete) return;
+
+    try {
+      await command.autocomplete(interaction);
+    } catch (error) {
+      console.error(`Ошибка автокомплита для ${interaction.commandName}:`, error);
+    }
+    return;
+  }
+
+  // 2. Выполнение слеш-команд
   if (!interaction.isChatInputCommand()) return;
 
   const command = interaction.client.commands.get(interaction.commandName);
@@ -50,9 +72,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     const errorMessage = 'Произошла ошибка при выполнении этой команды!';
     if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ content: errorMessage, ephemeral: true });
+      await interaction.followUp({ content: errorMessage, flags: MessageFlags.Ephemeral });
     } else {
-      await interaction.reply({ content: errorMessage, ephemeral: true });
+      await interaction.reply({ content: errorMessage, flags: MessageFlags.Ephemeral });
     }
   }
 });
