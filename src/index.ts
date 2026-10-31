@@ -1,6 +1,7 @@
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
 import dotenv from 'dotenv';
 import { pingCommand } from './commands/ping.js';
+import { serverIconCommand } from './commands/server-icon.js';
 
 dotenv.config();
 
@@ -18,9 +19,10 @@ const client = new Client({
   ],
 });
 
-// Инициализируем хранилище команд
+// Инициализируем хранилище команд перед добавлением
 client.commands = new Collection();
 client.commands.set(pingCommand.data.name, pingCommand);
+client.commands.set(serverIconCommand.data.name, serverIconCommand);
 
 client.once(Events.ClientReady, (c) => {
   console.log(`[Cobaltum] Готов! Авторизован как ${c.user.tag}`);
