@@ -11,6 +11,7 @@ import { serverIconCommand } from './commands/server-icon.js';
 import { rolesDebugCommand } from './commands/roles-debug.js';
 import { roleColorCommand } from './commands/role-color.js';
 import { roleHistoryCommand } from './commands/role-history.js';
+import { autoRenameCommand } from './commands/auto-rename.js';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ client.commands.set(serverIconCommand.data.name, serverIconCommand);
 client.commands.set(rolesDebugCommand.data.name, rolesDebugCommand);
 client.commands.set(roleColorCommand.data.name, roleColorCommand);
 client.commands.set(roleHistoryCommand.data.name, roleHistoryCommand);
+client.commands.set(autoRenameCommand.data.name, autoRenameCommand);
 
 client.once(Events.ClientReady, (c) => {
   console.log(`[Cobaltum] Готов! Авторизован как ${c.user.tag}`);
