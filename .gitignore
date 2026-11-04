@@ -22,3 +22,4 @@ Thumbs.db
 
 # Данные и логи
 data/
+.aider*
